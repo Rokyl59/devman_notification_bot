@@ -12,6 +12,7 @@ def get_response(url, headers, params):
 
 
 def send_message(chat_id, message):
+    chat_id = os.getenv('CHAT_ID')
     bot = Bot(token=os.getenv('TOKEN_TG'))
     bot.send_message(chat_id=chat_id, text=message)
     
@@ -19,17 +20,6 @@ def send_message(chat_id, message):
 if __name__ == '__main__':
     load_dotenv()
     token_devman = os.getenv('TOKEN_DEVMAN')
-
-    parser = argparse.ArgumentParser(
-        description='Скрипт запрашивает данные у Devman о свежих проверенных работах ученика'
-                    'И сообщает о результатах проверки ученику в созданный им телеграм бот')
-    parser.add_argument(
-        '--chat_id',
-        type=int,
-        required=True,
-        help='Идентификатор пользователя в телеграм'
-    )
-    args = parser.parse_args()
 
     headers = {
         'Authorization': f'Token {token_devman}'
@@ -52,7 +42,7 @@ if __name__ == '__main__':
                     message = f'У вас проверили работу "{lesson_title}"!\n'
                     message += 'К сожалению, в работе нашлись ошибки.' if is_negative else 'Ваша работа принята без ошибок!'
                     message += f'\n\n{lesson_url}'
-                    send_message(args.chat_id, message)
+                    send_message(message)
 
         except requests.exceptions.ReadTimeout:
             print('Ошибка чтения')
