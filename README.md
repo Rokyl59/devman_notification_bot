@@ -22,7 +22,7 @@ pip install -r requirements.txt
 При запуске скрипта необходимо передать один обязательный аргумент `chat_id` - ваш идентификатор в Telegram, чтобы бот мог сообщать вам о результатах проверки:
 
 ```bash
-python script.py --chat_id <chat_id>
+python devman_notify.py --chat_id <chat_id>
 ```
 
 ## Тестирование
