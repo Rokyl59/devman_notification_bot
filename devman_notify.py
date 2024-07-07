@@ -1,5 +1,4 @@
 import os
-import argparse
 import requests
 from dotenv import load_dotenv
 from telegram import Bot
@@ -11,11 +10,11 @@ def get_response(url, headers, params):
     return response.json()
 
 
-def send_message(chat_id, message):
+def send_message(message):
     chat_id = os.getenv('CHAT_ID')
     bot = Bot(token=os.getenv('TOKEN_TG'))
     bot.send_message(chat_id=chat_id, text=message)
-    
+
 
 if __name__ == '__main__':
     load_dotenv()
