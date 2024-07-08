@@ -14,7 +14,7 @@ pip install -r requirements.txt
 
 В скрипте используются две переменных окружения `.env`:
 
-- `TOKEN_DEVMAN` - Личный токен пользователя Devman
+- `DEVMAN_TOKEN` - Личный токен пользователя Devman
 - `TOKEN_TG` - API токен Telegram бота
 
 ## Запуск скрипта 

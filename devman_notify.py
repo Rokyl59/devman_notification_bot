@@ -14,11 +14,11 @@ def get_response(url, headers, params):
 def send_message(chat_id, message):
     bot = Bot(token=os.getenv('TOKEN_TG'))
     bot.send_message(chat_id=chat_id, text=message)
-    
+
 
 if __name__ == '__main__':
     load_dotenv()
-    token_devman = os.getenv('TOKEN_DEVMAN')
+    devman_token = os.getenv('DEVMAN_TOKEN')
 
     parser = argparse.ArgumentParser(
         description='Скрипт запрашивает данные у Devman о свежих проверенных работах ученика'
