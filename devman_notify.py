@@ -1,4 +1,5 @@
 import os
+import time
 import argparse
 import requests
 from dotenv import load_dotenv
@@ -33,11 +34,11 @@ if __name__ == '__main__':
             params = {'timestamp': timestamp} if timestamp else {}
             response = requests.get(url, headers=headers, params=params, timeout=60)
             response.raise_for_status()
-            result = response.json()
-            timestamp = result.get('timestamp_to_request', None)
+            notify = response.json()
+            timestamp = notify.get('timestamp_to_request', None)
 
-            if result.get('status') == 'found':
-                for attempt in result.get('new_attempts', []):
+            if notify.get('status') == 'found':
+                for attempt in notify.get('new_attempts', []):
                     lesson_title = attempt.get('lesson_title')
                     is_negative = attempt.get('is_negative')
                     lesson_url = attempt.get('lesson_url')
@@ -47,6 +48,6 @@ if __name__ == '__main__':
                     bot.send_message(chat_id=args.chat_id, text=message)
 
         except requests.exceptions.ReadTimeout:
-            print('Ошибка чтения')
+            continue
         except requests.exceptions.ConnectionError:
-            print('Нет соединения с сайтом')
+            time.sleep(5)
