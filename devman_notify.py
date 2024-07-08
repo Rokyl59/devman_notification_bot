@@ -5,20 +5,10 @@ from dotenv import load_dotenv
 from telegram import Bot
 
 
-def get_response(url, headers, params):
-    response = requests.get(url, headers=headers, params=params, timeout=60)
-    response.raise_for_status()
-    return response.json()
-
-
-def send_message(chat_id, message):
-    bot = Bot(token=os.getenv('TOKEN_TG'))
-    bot.send_message(chat_id=chat_id, text=message)
-
-
 if __name__ == '__main__':
     load_dotenv()
     devman_token = os.getenv('DEVMAN_TOKEN')
+    bot = Bot(token=os.getenv('TOKEN_TG'))
 
     parser = argparse.ArgumentParser(
         description='Скрипт запрашивает данные у Devman о свежих проверенных работах ученика'
@@ -32,7 +22,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     headers = {
-        'Authorization': f'Token {token_devman}'
+        'Authorization': f'Token {devman_token}'
     }
     url = 'https://dvmn.org/api/long_polling/'
 
@@ -41,7 +31,9 @@ if __name__ == '__main__':
     while True:
         try:
             params = {'timestamp': timestamp} if timestamp else {}
-            result = get_response(url, headers, params)
+            response = requests.get(url, headers=headers, params=params, timeout=60)
+            response.raise_for_status()
+            result = response.json()
             timestamp = result.get('timestamp_to_request', None)
 
             if result.get('status') == 'found':
@@ -52,7 +44,7 @@ if __name__ == '__main__':
                     message = f'У вас проверили работу "{lesson_title}"!\n'
                     message += 'К сожалению, в работе нашлись ошибки.' if is_negative else 'Ваша работа принята без ошибок!'
                     message += f'\n\n{lesson_url}'
-                    send_message(args.chat_id, message)
+                    bot.send_message(chat_id=args.chat_id, text=message)
 
         except requests.exceptions.ReadTimeout:
             print('Ошибка чтения')
