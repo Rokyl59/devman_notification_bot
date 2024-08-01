@@ -34,11 +34,11 @@ if __name__ == '__main__':
             params = {'timestamp': timestamp} if timestamp else {}
             response = requests.get(url, headers=headers, params=params, timeout=60)
             response.raise_for_status()
-            notify = response.json()
-            timestamp = notify.get('timestamp_to_request', None)
+            notification = response.json()
+            timestamp = notification.get('timestamp_to_request', None)
 
-            if notify.get('status') == 'found':
-                for attempt in notify.get('new_attempts', []):
+            if notification.get('status') == 'found':
+                for attempt in notification.get('new_attempts', []):
                     lesson_title = attempt.get('lesson_title')
                     is_negative = attempt.get('is_negative')
                     lesson_url = attempt.get('lesson_url')
