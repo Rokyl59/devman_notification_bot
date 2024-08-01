@@ -16,13 +16,12 @@ pip install -r requirements.txt
 
 - `DEVMAN_TOKEN` - Личный токен пользователя Devman
 - `TOKEN_TG` - API токен Telegram бота
+- `CHAT_ID` - ваш идентификатор в Telegram
 
 ## Запуск скрипта 
 
-При запуске скрипта необходимо передать один обязательный аргумент `chat_id` - ваш идентификатор в Telegram, чтобы бот мог сообщать вам о результатах проверки:
-
 ```bash
-python devman_notify.py --chat_id <chat_id>
+python devman_notify.py
 ```
 
 ## Тестирование
